@@ -33,9 +33,12 @@ const LandingSection = () => {
       .then(
         () => {
           console.log('SUCCESS!');
+          onOpen('success', 'Your message has been sent successfully!');
+          formik.resetForm();
         },
         (error) => {
           console.log('FAILED...', error.text);
+          onOpen('error', 'Failed to send message. Please try again later.');
         },
       );
   };
@@ -60,12 +63,6 @@ const LandingSection = () => {
   });
 
   useEffect(() => {
-    if (response) {
-      onOpen(response.type, response.message);
-      if (response.type === 'success') {
-        formik.resetForm();
-      }
-    }
   }, [response]);
 
 
