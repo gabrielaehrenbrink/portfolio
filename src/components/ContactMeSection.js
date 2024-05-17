@@ -23,26 +23,23 @@ const LandingSection = () => {
   const { isLoading, response } = useSubmit();
   const { onOpen } = useAlertContext();
 
-  const sendEmail = (e) => {
-    e.preventDefault();
-
-    emailjs
-      .sendForm(process.env.REACT_APP_SERVICE_ID, process.env.REACT_APP_TEMPLATE_ID, formRef.current, {
-        publicKey: process.env.REACT_APP_PUBLIC_KEY,
-      })
-      .then(
-        () => {
-          console.log('SUCCESS!');
-          onOpen('success', 'Your message has been sent successfully!');
-          formik.resetForm();
-        },
-        (error) => {
-          console.log('FAILED...', error.text);
-          onOpen('error', 'Failed to send message. Please try again later.');
-        },
-      );
+  const sendEmail = () => {
+    emailjs.sendForm(process.env.REACT_APP_SERVICE_ID, process.env.REACT_APP_TEMPLATE_ID, formRef.current, {
+      publicKey: process.env.REACT_APP_PUBLIC_KEY,
+    })
+    .then(
+      () => {
+        console.log('SUCCESS!');
+        onOpen('success', 'Your message has been sent successfully!');
+        formik.resetForm();
+      },
+      (error) => {
+        console.log('FAILED...', error.text);
+        onOpen('error', 'Failed to send message. Please try again later.');
+      },
+    );
   };
-
+  
   const formik = useFormik({
     initialValues: {
       firstName: '',
@@ -51,7 +48,7 @@ const LandingSection = () => {
       comment: ''
     },
     onSubmit: (values, { setSubmitting }) => {
-      sendEmail(values);
+      sendEmail();
       setSubmitting(false);
     },
     validationSchema: Yup.object({
@@ -78,7 +75,7 @@ const LandingSection = () => {
           Contact me
         </Heading>
         <Box p={6} rounded="md" w="100%">
-          <form ref={formRef} onSubmit={sendEmail}>
+        <form ref={formRef} onSubmit={formik.handleSubmit}>
             <VStack spacing={4}>
               <FormControl isInvalid={formik.touched.firstName && !!formik.errors.firstName}>
                 <FormLabel htmlFor="firstName">Name</FormLabel>
