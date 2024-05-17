@@ -4,10 +4,9 @@ import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import {
   faGithub,
   faLinkedin,
-  faMedium,
-  faStackOverflow,
 } from "@fortawesome/free-brands-svg-icons";
-import { Box, HStack } from "@chakra-ui/react";
+import { Box, HStack, Menu, MenuButton, MenuList, MenuItem, IconButton, useBreakpointValue } from "@chakra-ui/react";
+import { HamburgerIcon } from '@chakra-ui/icons';
 
 const socials = [
   {
@@ -27,6 +26,8 @@ const socials = [
 const Header = () => {
   const [headerStyle, setHeaderStyle] = useState({ transform: 'translateY(0)' });
   const prevScrollY = useRef(0);
+  const menuItemColor = useBreakpointValue({ base: '#240750', md: 'initial' });
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -67,16 +68,18 @@ const Header = () => {
       transitionDuration=".3s"
       transitionTimingFunction="ease-in-out"
       backgroundColor="#240750"
+      style={headerStyle}
     >
-      <Box color="white" maxWidth="1280px" margin="0 auto">
-        <HStack
-          px={16}
+      <Box color="white" maxWidth="1280px" margin="0 auto" width="full" px={{ base: 4, md: 16 }}>
+      <HStack
           py={4}
           justifyContent="space-between"
           alignItems="center"
+          direction={{ base: 'column', md: 'row' }}
+          spacing={{ base: 4, md: 0 }}
         >
-          <nav>
-            <HStack spacing={4}>
+         <nav>
+            <HStack spacing={4} justifyContent="center">
               {socials.map((social, index) => (
                 <a key={index} href={social.url} target="_blank" rel="noopener noreferrer">
                   <FontAwesomeIcon icon={social.icon} size="2x" />
@@ -85,14 +88,27 @@ const Header = () => {
             </HStack>
           </nav>
           <nav>
-          <HStack spacing={8}>
-          <a href="#projects" onClick={handleClick('projects')} key="projects">
-            Projects
-          </a>
-          <a href="#contact-me" onClick={handleClick('contactme')} key="contact-me">
-            Contact Me
-          </a>
-        </HStack>
+            <HStack spacing={8} display={{ base: 'none', md: 'flex' }}>
+              <a href="#projects" onClick={handleClick('projects')} key="projects" style={{ color: 'white' }}>
+                Projects
+              </a>
+              <a href="#contact-me" onClick={handleClick('contactme')} key="contact-me" style={{ color: 'white' }}>
+                Contact Me
+              </a>
+            </HStack>
+            <Menu>
+              <MenuButton
+                as={IconButton}
+                icon={<HamburgerIcon />}
+                display={{ base: 'flex', md: 'none' }}
+                variant="outline"
+                aria-label="Options"
+              />
+              <MenuList>
+                <MenuItem onClick={handleClick('projects')} style={{ color: menuItemColor }}>Projects</MenuItem>
+                <MenuItem onClick={handleClick('contactme')} style={{ color: menuItemColor }}>Contact Me</MenuItem>
+              </MenuList>
+            </Menu>
           </nav>
         </HStack>
       </Box>

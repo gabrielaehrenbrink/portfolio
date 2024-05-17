@@ -57,12 +57,12 @@ const ProjectsSection = () => {
       alignItems="flex-start"
       spacing={8}
     >
-      <Heading as="h1" id="projects-section">
+      <Heading as="h1" id="projects-section" textAlign={{ base: "center", md: "left" }}>
         Featured Projects
       </Heading>
       <Box
         display="grid"
-        gridTemplateColumns="repeat(2,minmax(0,1fr))"
+        gridTemplateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, minmax(0, 1fr))" }}
         gridGap={8}
       >
         {projects.map((project) => (
